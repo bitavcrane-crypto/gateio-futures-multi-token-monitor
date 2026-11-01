@@ -39,7 +39,7 @@ function analyze(raw,stats,ticker,book,funding){
  if(lsr===null)warnings.push("LSR акаунтів недоступний.");if(fr===null)warnings.push("Funding недоступний.");
  const score=flags.length;let status="NO TRADE",kind="";
  if(move>25&&oiChange!==null&&oiChange>10&&price>e20){status="PUMP / SQUEEZE RISK";kind="pump"}
- else if(price<e20&&e20<e50&&score>=3&&warnings.length<3){status="SHORT CONFIRMED";kind="short"}
+ else if(price<e20&&e20<e50&&score>=3&&warnings.length<3){status="BEARISH SETUP · CHECK CONFIRMATION";kind="short"}
  else if(score>=2){status="POTENTIAL SHORT";kind="potential"}
  else if(price>e20&&e20>e50){status="LONG PRESSURE";kind="long"}
  const vol=av??price*.03;
