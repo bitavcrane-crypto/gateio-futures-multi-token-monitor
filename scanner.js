@@ -23,7 +23,7 @@ function analyze(contract,ticker,candles,stats){
  const high=Math.max(...window72.map(x=>x.h)),low=Math.min(...window72.map(x=>x.l));
  const highDist=high?(price/high-1)*100:null,lowDist=low?(price/low-1)*100:null;
  const s=(stats||[]).filter(x=>n(x.time)!==null).sort((a,b)=>n(a.time)-n(b.time));
- const st=s.at(-1)||{},old=s.length>=20?s.at(-20):null;
+ const st=s.at(-1)||{},old=s.length>=25?s.at(-25):null;
  const oi=n(st.open_interest_usd),oldOi=n(old?.open_interest_usd),oiChange=oi!==null&&oldOi>0?(oi/oldOi-1)*100:null;
  const lsr=n(st.lsr_account),fund=n(ticker.funding_rate);
  const last24=s.slice(-24);
