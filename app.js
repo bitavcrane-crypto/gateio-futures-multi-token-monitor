@@ -21,7 +21,7 @@ function analyze(raw,stats,ticker,book,funding){
  const high=Math.max(...recent.map(c=>c.h)),low=Math.min(...recent.map(c=>c.l)),move=recent[0].o?(price/recent[0].o-1)*100:null;
  const ss=(stats||[]).slice().sort((a,b)=>(num(a.time)||0)-(num(b.time)||0)),last=ss.at(-1)||{},old=ss.length>24?ss.at(-25):null;
  const oi=num(last.open_interest_usd),oldOi=num(old?.open_interest_usd),oiChange=oi!==null&&oldOi!==null&&oldOi>0?(oi/oldOi-1)*100:null,lsr=num(last.lsr_account);
- const longLiq=ss.slice(-24).reduce((s,x)=>s+(num(x.long_liq_usd_new)??num(x.long_liq_usd)??0),0),shortLiq=ss.slice(-24).reduce((s,x)=>s+(num(x.short_liq_usd_new)??num(x.short_liq_usd)??0),0);
+ const longValues=ss.slice(-24).map(x=>num(x.long_liq_usd_new)??num(x.long_liq_usd)).filter(Number.isFinite),shortValues=ss.slice(-24).map(x=>num(x.short_liq_usd_new)??num(x.short_liq_usd)).filter(Number.isFinite),longLiq=longValues.length?longValues.reduce((s,x)=>s+x,0):null,shortLiq=shortValues.length?shortValues.reduce((s,x)=>s+x,0):null;
  const rates=(funding||[]).map(x=>num(x.r)).filter(Number.isFinite),fr=rates.length?rates.at(-1):num(ticker.funding_rate);
  const bids=(book.bids||[]).map(x=>[num(x.p),num(x.s)]).filter(x=>x.every(Number.isFinite)),asks=(book.asks||[]).map(x=>[num(x.p),num(x.s)]).filter(x=>x.every(Number.isFinite));
  const bid=bids.reduce((s,[p,q])=>s+(p>=price*.97?p*q:0),0),ask=asks.reduce((s,[p,q])=>s+(p<=price*1.03?p*q:0),0),depth=bid>0?ask/bid:null,flags=[],warnings=[];
